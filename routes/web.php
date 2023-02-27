@@ -4,6 +4,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\KuliahController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -55,19 +58,29 @@ use Illuminate\Support\Facades\Route;
 
 // Pertemuan 3
     // praktikum 1
-    Route::get('/', [HomeController::class, 'index']);
 
-    Route::prefix('product')->group(function () {
-        Route::get('/list', [PageController::class, 'product']);
-    });
+    // Route::get('/', [HomeController::class, 'index']);
 
-    Route::get('/news/{param}', [HomeController::class, 'news']);
+    // Route::prefix('product')->group(function () {
+    //     Route::get('/list', [PageController::class, 'product']);
+    // });
 
-    Route::prefix('program')->group(function () {
-        Route::get('/list', [HomeController::class, 'program']);
-    });
+    // Route::get('/news/{param}', [HomeController::class, 'news']);
+
+    // Route::prefix('program')->group(function () {
+    //     Route::get('/list', [HomeController::class, 'program']);
+    // });
     
-    Route::get('/about', [HomeController::class, 'about']);
+    // Route::get('/about', [HomeController::class, 'about']);
 
-    Route::resource('contact', HomeController::class);
+    // Route::resource('contact', HomeController::class);
+
+
+    // praktikum 2
+
+    Route::get('/', [DashboardController::class, 'index']);
+
+    Route::get('/profile', [ProfileController::class, 'index']);
+
+    Route::get('/kuliah', [KuliahController::class, 'index']);
 
