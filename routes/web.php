@@ -7,6 +7,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KuliahController;
+use App\Http\Controllers\KendaraanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -70,7 +71,7 @@ use Illuminate\Support\Facades\Route;
     // Route::prefix('program')->group(function () {
     //     Route::get('/list', [HomeController::class, 'program']);
     // });
-    
+
     // Route::get('/about', [HomeController::class, 'about']);
 
     // Route::resource('contact', HomeController::class);
@@ -83,4 +84,8 @@ use Illuminate\Support\Facades\Route;
     Route::get('/profile', [ProfileController::class, 'index']);
 
     Route::get('/kuliah', [KuliahController::class, 'index']);
+
+//pertemuan 4
+
+    Route::get('/kendaraan',[KendaraanController::class, 'index']);
 
