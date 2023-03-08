@@ -49,6 +49,30 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{{ url('/hobby') }}" class="nav-link">
+              <i class="nav-icon fas fa-heart"></i>
+              <p>
+                Hobby
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url('/keluarga') }}" class="nav-link">
+              <i class="nav-icon fas fa-home"></i>
+              <p>
+                Hobby
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url('/matkul') }}" class="nav-link">
+              <i class="nav-icon fas fa-book"></i>
+              <p>
+                Mata Kuliah
+              </p>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

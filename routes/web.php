@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KuliahController;
 use App\Http\Controllers\KendaraanController;
+use App\Http\Controllers\HobbyController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -88,4 +89,5 @@ use Illuminate\Support\Facades\Route;
 //pertemuan 4
 
     Route::get('/kendaraan',[KendaraanController::class, 'index']);
+    Route::get('/hobby',[HobbyController::class, 'index']);
 

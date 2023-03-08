@@ -18,11 +18,11 @@
 <!-- Site wrapper -->
 <div class="wrapper">
   <!-- Navbar -->
-  @include('pertemuan3.praktikum2.layout.navbar')
+  @include('layout.navbar')
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  @include('pertemuan3.praktikum2.layout.sidebar')
+  @include('layout.sidebar')
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -62,7 +62,7 @@
   </div>
   <!-- /.content-wrapper -->
 
-@include('pertemuan3.praktikum2.layout.footer')
+@include('layout.footer')
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
