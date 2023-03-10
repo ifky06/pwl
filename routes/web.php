@@ -10,6 +10,7 @@ use App\Http\Controllers\KuliahController;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\HobbyController;
 use App\Http\Controllers\KeluargaController;
+use App\Http\Controllers\MatkulController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -92,4 +93,5 @@ use Illuminate\Support\Facades\Route;
     Route::get('/kendaraan',[KendaraanController::class, 'index']);
     Route::get('/hobby',[HobbyController::class, 'index']);
     Route::get('/keluarga',[KeluargaController::class, 'index']);
+    Route::get('/matkul',[MatkulController::class, 'index']);
 
