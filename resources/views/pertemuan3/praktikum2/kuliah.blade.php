@@ -1,4 +1,4 @@
-@extends('pertemuan3.praktikum2.layout.template')
+@extends('layout.template')
 
 @section('content')
 Pengalaman Kuliah saya Menyenenangkan
