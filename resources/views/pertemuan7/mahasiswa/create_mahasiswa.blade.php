@@ -11,6 +11,14 @@
                 <small class="text-danger">{{ $message }}</small>
             @enderror
         </div>
+        <div>
+            <label for="kelas_id">Kelas</label>
+            <select name="kelas_id" id="kelas_id" class="form-control">
+                @foreach($kelas as $row)
+                    <option value="{{$row->id}}" @isset($mhs) @selected($mhs->kelas_id == $row->id) @endisset>{{$row->nama_kelas}}</option>
+                @endforeach
+            </select>
+        </div>
         <div class="form-group">
             <label for="nama">Nama</label>
             <input type="text" name="nama" id="nama" class="form-control" value="{{isset($mhs)?$mhs->nama:old('nama')}}">

@@ -7,6 +7,7 @@
         <tr>
             <th>No</th>
             <th>NIM</th>
+            <th>Kelas</th>
             <th>Nama</th>
             <th>Jenis Kelamin</th>
             <th>HP</th>
@@ -19,6 +20,7 @@
                 <tr>
                     <td>{{ $no+1 }}</td>
                     <td>{{ $row->nim }}</td>
+                    <td>{{ $row->kelas->nama_kelas }}</td>
                     <td>{{ $row->nama }}</td>
                     <td>{{ $row->jk }}</td>
                     <td>{{$row->hp }}</td>
