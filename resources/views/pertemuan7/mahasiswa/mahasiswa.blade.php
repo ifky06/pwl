@@ -25,6 +25,7 @@
                     <td>{{ $row->jk }}</td>
                     <td>{{$row->hp }}</td>
                     <td>
+                        <a href="{{url('/mahasiswa/'.$row->id)}}" class="btn btn-sm btn-info">show</a>
                         <a href="{{url('/mahasiswa/'.$row->id.'/edit')}}" class="btn btn-sm btn-primary">edit</a>
                         <form action="{{url('/mahasiswa/'.$row->id)}}" method="post" style="display: inline">
                             @csrf
