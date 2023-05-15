@@ -106,4 +106,7 @@ Route::middleware(['auth'])->group(function () {
 
 //Pertemuan 7
     Route::resource('/mahasiswa', MahasiswaController::class)->parameter('mahasiswa', 'id');
+
+//Pertemuan 10
+    Route::resource('/articles', ArticleController::class);
 });
