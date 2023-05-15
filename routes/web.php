@@ -108,5 +108,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/mahasiswa', MahasiswaController::class)->parameter('mahasiswa', 'id');
 
 //Pertemuan 10
+    Route::get('/articles/cetak', [ArticleController::class, 'cetak_pdf']);
     Route::resource('/articles', ArticleController::class);
 });
