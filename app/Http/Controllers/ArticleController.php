@@ -72,7 +72,9 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        //
+            return view('articles.create')
+                ->with('url_form',url('/articles/'.$article->id))
+                ->with('data',$article);
     }
 
     /**
@@ -84,7 +86,26 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article)
     {
-        //
+
+                $request->validate([
+                    'title' => 'required|string|max:50',
+                    'content' => 'required|string',
+                    'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                ]);
+                if($request->file('image')){
+                    if($article->featured_image && file_exists(storage_path('app/public/' . $article->featured_image))){
+                        \Storage::delete('public/'.$article->featured_image);
+                    }
+                    $image_name = $request->file('image')->store('images', 'public');
+                } else {
+                    $image_name = $article->featured_image;
+                }
+                $article->update([
+                    'title' => $request->title,
+                    'content' => $request->content,
+                    'featured_image' => $image_name,
+                ]);
+                return redirect('/articles')->with('success', 'Artikel berhasil diubah');
     }
 
     /**

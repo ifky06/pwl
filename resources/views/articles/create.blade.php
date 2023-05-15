@@ -18,6 +18,11 @@
             <small class="text-danger">{{ $message }}</small>
             @enderror
         </div>
+        @isset($data)
+            <div class="form-group">
+                <img src="{{asset('storage/'.$data->featured_image)}}" alt="{{$data->title}}" width="150">
+            </div>
+        @endisset
         <div class="form-group">
             <label for="image">Feature Image</label>
             <input type="file" accept="image/*" name="image" id="image" class="form-control">
