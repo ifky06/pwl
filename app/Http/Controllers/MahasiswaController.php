@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\KelasModel;
 use App\Models\MahasiswaModel;
 use App\Models\MatkulMahasiswaModel;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class MahasiswaController extends Controller
@@ -42,6 +43,7 @@ class MahasiswaController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
             'nim' => 'required|string|max:10|unique:mahasiswa,nim',
             'nama' => 'required|string|max:50',
@@ -52,7 +54,15 @@ class MahasiswaController extends Controller
             'hp' => 'required|string|max:15',
         ]);
 
-        MahasiswaModel::create($request->all());
+        $data = $request->all();
+
+        if($request->file('foto')){
+            $image_name = $request->file('foto')->store('images', 'public');
+            $data['foto'] = $image_name;
+
+        }
+
+        MahasiswaModel::create($data);
         return redirect ('/mahasiswa')
             ->with('success','Mahasiswa berhasil ditambahkan');
     }
@@ -107,7 +117,17 @@ class MahasiswaController extends Controller
             'hp' => 'required|string|max:15',
         ]);
 
-        $data = MahasiswaModel::where('id','=',$id)->update($request->except('_token','_method'));
+        $data = MahasiswaModel::where('id','=',$id)->first();
+        $dataUpdate = $request->except('_token','_method');
+        if($request->file('foto')){
+            if($data->foto && file_exists(storage_path('app/public/'.$data->foto))){
+                \Storage::delete('public/'.$data->foto);
+            }
+            $image_name = $request->file('foto')->store('images', 'public');
+            $dataUpdate['foto'] = $image_name;
+        }
+        $data->update($dataUpdate);
+//        $data = MahasiswaModel::where('id','=',$id)->update($request->except('_token','_method'));
         return redirect ('/mahasiswa')
             ->with('success','data Mahasiswa berhasil diupdate');
     }
@@ -123,5 +143,13 @@ class MahasiswaController extends Controller
         MahasiswaModel::where('id','=',$id)->delete();
         return redirect ('/mahasiswa')
             ->with('success','data Mahasiswa berhasil dihapus');
+    }
+
+    public function cetak_khs($id)
+    {
+        $data = MahasiswaModel::find($id);
+        $khs = MatkulMahasiswaModel::where('mahasiswa_id',$id)->get();
+        $pdf = PDF::loadView('pertemuan7.mahasiswa.mahasiswa_pdf',compact('data','khs'));
+        return $pdf->stream();
     }
 }

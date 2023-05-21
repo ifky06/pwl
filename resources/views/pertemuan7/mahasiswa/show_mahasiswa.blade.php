@@ -35,4 +35,5 @@
 
         </tbody>
     </table>
+    <a href="{{ url('cetak/khs/'.$data->id) }}" class="btn btn-primary">CETAK PDF</a>
 @endsection

@@ -1,7 +1,7 @@
 @extends('layout.template')
 
 @section('content')
-    <form action="{{$url_form}}" method="post">
+    <form action="{{$url_form}}" method="post" enctype="multipart/form-data">
         @csrf
         {!! (isset($mhs))? method_field('PUT'):'' !!}
         <div class="form-group">
@@ -61,6 +61,17 @@
                 <small class="text-danger">{{ $message }}</small>
             @enderror
         </div>
+        <div class="form-group">
+            <label for="foto">Foto</label> <br>
+            @isset($mhs)
+                <img src="{{asset('storage/'.$mhs->foto)}}" alt="{{$mhs->nama}}" width="150">
+            @endisset
+            <input type="file" name="foto" id="foto" class="form-control" value="{{old('foto')}}">
+            @error('foto')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
+        </div>
+
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 @endsection
