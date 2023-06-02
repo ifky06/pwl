@@ -7,6 +7,8 @@ use App\Models\MahasiswaModel;
 use App\Models\MatkulMahasiswaModel;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\Facades\DataTables;
 
 class MahasiswaController extends Controller
 {
@@ -17,9 +19,23 @@ class MahasiswaController extends Controller
      */
     public function index()
     {
-        $mhs=MahasiswaModel::all();
+//        $mhs=MahasiswaModel::all();
+        $kelas=KelasModel::all();
         return view('pertemuan7.mahasiswa.mahasiswa')
-            ->with('mhs',$mhs);
+            ->with('kelas',$kelas);
+//            ->with('mhs',$mhs);
+    }
+
+    public function data()
+    {
+        $mhs=MahasiswaModel::all();
+        return DataTables::of($mhs)
+            ->addColumn('kelas', function ($mhs) {
+                return $mhs->kelas->nama_kelas;
+            })
+            ->addIndexColumn()
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
     /**
@@ -41,32 +57,66 @@ class MahasiswaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+//    public function store(Request $request)
+//    {
+//
+//        $request->validate([
+//            'nim' => 'required|string|max:10|unique:mahasiswa,nim',
+//            'nama' => 'required|string|max:50',
+//            'jk' => 'required',
+//            'tempat_lahir' => 'required|string|max:50',
+//            'tanggal_lahir' => 'required|date',
+//            'alamat' => 'required|string|max:255',
+//            'hp' => 'required|string|max:15',
+//        ]);
+//
+//        $data = $request->all();
+//
+//        if($request->file('foto')){
+//            $image_name = $request->file('foto')->store('images', 'public');
+//            $data['foto'] = $image_name;
+//
+//        }
+//
+//        MahasiswaModel::create($data);
+//        return redirect ('/mahasiswa')
+//            ->with('success','Mahasiswa berhasil ditambahkan');
+//    }
+
     public function store(Request $request)
     {
-
-        $request->validate([
+        $rule = [
             'nim' => 'required|string|max:10|unique:mahasiswa,nim',
             'nama' => 'required|string|max:50',
-            'jk' => 'required',
-            'tempat_lahir' => 'required|string|max:50',
-            'tanggal_lahir' => 'required|date',
-            'alamat' => 'required|string|max:255',
-            'hp' => 'required|string|max:15',
-        ]);
+            'hp' => 'required|digits_between:6,15',
+        ];
 
         $data = $request->all();
+        $foto = $request->foto;
 
-        if($request->file('foto')){
-            $image_name = $request->file('foto')->store('images', 'public');
-            $data['foto'] = $image_name;
-
+        $validator = Validator::make($data, $rule);
+        if($validator->fails()){
+            return response()->json([
+                'status' => false,
+                'modal_close' => false,
+                'message' => 'Data gagal ditambahkan. ' .$validator->errors()->first(),
+                'data' => $validator->errors()
+            ]);
         }
 
-        MahasiswaModel::create($data);
-        return redirect ('/mahasiswa')
-            ->with('success','Mahasiswa berhasil ditambahkan');
-    }
+        if($foto){
+            $image_name = $foto->store('images', 'public');
+            $data['foto'] = $image_name;
+        }
 
+        $mhs = MahasiswaModel::create($data);
+        return response()->json([
+            'status' => ($mhs),
+            'modal_close' => false,
+            'message' => ($mhs)? 'Data berhasil ditambahkan' : 'Data gagal ditambahkan',
+            'data' => null
+        ]);
+    }
     /**
      * Display the specified resource.
      *
@@ -90,12 +140,14 @@ class MahasiswaController extends Controller
      */
     public function edit($id)
     {
-        $kelas=KelasModel::all();
+//        $kelas=KelasModel::all();
         $mhs = MahasiswaModel::find($id);
-        return view('pertemuan7.mahasiswa.create_mahasiswa')
-            ->with('mhs',$mhs)
-            ->with('url_form',url('/mahasiswa/'.$id))
-            ->with('kelas',$kelas);
+//        return view('pertemuan7.mahasiswa.create_mahasiswa')
+//            ->with('mhs',$mhs)
+//            ->with('url_form',url('/mahasiswa/'.$id))
+//            ->with('kelas',$kelas);
+        return response()->json($mhs);
+
     }
 
     /**
@@ -107,29 +159,66 @@ class MahasiswaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+//        $request->validate([
+//            'nim' => 'required|string|max:10|unique:mahasiswa,nim,'.$id,
+//            'nama' => 'required|string|max:50',
+//            'jk' => 'required',
+//            'tempat_lahir' => 'required|string|max:50',
+//            'tanggal_lahir' => 'required|date',
+//            'alamat' => 'required|string|max:255',
+//            'hp' => 'required|string|max:15',
+//        ]);
+//
+//        $data = MahasiswaModel::where('id','=',$id)->first();
+//        $dataUpdate = $request->except('_token','_method');
+//        if($request->file('foto')){
+//            if($data->foto && file_exists(storage_path('app/public/'.$data->foto))){
+//                \Storage::delete('public/'.$data->foto);
+//            }
+//            $image_name = $request->file('foto')->store('images', 'public');
+//            $dataUpdate['foto'] = $image_name;
+//        }
+//        $data->update($dataUpdate);
+////        $data = MahasiswaModel::where('id','=',$id)->update($request->except('_token','_method'));
+//        return redirect ('/mahasiswa')
+//            ->with('success','data Mahasiswa berhasil diupdate');
+
+        $rule = [
             'nim' => 'required|string|max:10|unique:mahasiswa,nim,'.$id,
             'nama' => 'required|string|max:50',
-            'jk' => 'required',
-            'tempat_lahir' => 'required|string|max:50',
-            'tanggal_lahir' => 'required|date',
-            'alamat' => 'required|string|max:255',
-            'hp' => 'required|string|max:15',
-        ]);
+            'hp' => 'required|digits_between:6,15',
+        ];
 
-        $data = MahasiswaModel::where('id','=',$id)->first();
-        $dataUpdate = $request->except('_token','_method');
-        if($request->file('foto')){
-            if($data->foto && file_exists(storage_path('app/public/'.$data->foto))){
-                \Storage::delete('public/'.$data->foto);
-            }
-            $image_name = $request->file('foto')->store('images', 'public');
-            $dataUpdate['foto'] = $image_name;
+        $data = $request->all();
+        $foto = $request->foto;
+
+        $validator = Validator::make($data, $rule);
+        if($validator->fails()){
+            return response()->json([
+                'status' => false,
+                'modal_close' => false,
+                'message' => 'Data gagal diupdate. ' .$validator->errors()->first(),
+                'data' => $validator->errors()
+            ]);
         }
-        $data->update($dataUpdate);
-//        $data = MahasiswaModel::where('id','=',$id)->update($request->except('_token','_method'));
-        return redirect ('/mahasiswa')
-            ->with('success','data Mahasiswa berhasil diupdate');
+
+        $mhs = MahasiswaModel::where('id','=',$id)->first();
+        if($foto){
+            if($mhs->foto && file_exists(storage_path('app/public/'.$mhs->foto))){
+                \Storage::delete('public/'.$mhs->foto);
+            }
+            $image_name = $foto->store('images', 'public');
+            $data['foto'] = $image_name;
+        }
+
+
+        $mhs->update($data);
+        return response()->json([
+            'status' => ($mhs),
+            'modal_close' => false,
+            'message' => ($mhs)? 'Data berhasil diupdate' : 'Data gagal diupdate',
+            'data' => null
+        ]);
     }
 
     /**

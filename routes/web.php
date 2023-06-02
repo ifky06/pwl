@@ -83,34 +83,35 @@ use Illuminate\Support\Facades\Route;
     // Route::resource('contact', HomeController::class);
 
 
-//Auth::routes();
-//Route::get('/logout', [LoginController::class, 'logout']);
-//
-//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-//
-//Route::middleware(['auth'])->group(function () {
-//    // praktikum 2
-//
-//    Route::get('/', [DashboardController::class, 'index']);
-//
-//    Route::get('/profile', [ProfileController::class, 'index']);
-//
-//    Route::get('/kuliah', [KuliahController::class, 'index']);
-//
-////pertemuan 4
-//
-//    Route::get('/kendaraan', [KendaraanController::class, 'index']);
-//    Route::get('/hobby', [HobbyController::class, 'index']);
-//    Route::get('/keluarga', [KeluargaController::class, 'index']);
-//    Route::get('/matkul', [MatkulController::class, 'index']);
-//
-////Pertemuan 7
-//    Route::resource('/mahasiswa', MahasiswaController::class)->parameter('mahasiswa', 'id');
-//
-////Pertemuan 10
-//    Route::get('/articles/cetak', [ArticleController::class, 'cetak_pdf']);
-//    Route::resource('/articles', ArticleController::class);
-//    Route::get('cetak/khs/{id}', [MahasiswaController::class, 'cetak_khs']);
-//});
+Auth::routes();
+Route::get('/logout', [LoginController::class, 'logout']);
 
-//Pertemuan 11
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::middleware(['auth'])->group(function () {
+    // praktikum 2
+
+    Route::get('/', [DashboardController::class, 'index']);
+
+    Route::get('/profile', [ProfileController::class, 'index']);
+
+    Route::get('/kuliah', [KuliahController::class, 'index']);
+
+//pertemuan 4
+
+    Route::get('/kendaraan', [KendaraanController::class, 'index']);
+    Route::get('/hobby', [HobbyController::class, 'index']);
+    Route::get('/keluarga', [KeluargaController::class, 'index']);
+    Route::get('/matkul', [MatkulController::class, 'index']);
+
+//Pertemuan 7
+    Route::resource('/mahasiswa', MahasiswaController::class)->parameter('mahasiswa', 'id');
+
+    Route::post('/mahasiswa/data', [MahasiswaController::class, 'data']);
+//Pertemuan 10
+    Route::get('/articles/cetak', [ArticleController::class, 'cetak_pdf']);
+    Route::resource('/articles', ArticleController::class);
+    Route::get('cetak/khs/{id}', [MahasiswaController::class, 'cetak_khs']);
+});
+
+//Pertemuan 12
