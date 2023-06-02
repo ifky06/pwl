@@ -125,11 +125,19 @@ class MahasiswaController extends Controller
      */
     public function show($id)
     {
-        $data = MahasiswaModel::find($id);
-        $khs = MatkulMahasiswaModel::where('mahasiswa_id',$id)->get();
-        return view('pertemuan7.mahasiswa.show_mahasiswa')
-            ->with('data',$data)
-            ->with('khs',$khs);
+        $data['mahasiswa'] = MahasiswaModel::find($id);
+        $data['mahasiswa']->kelas_id = $data['mahasiswa']->kelas->nama_kelas;
+        $data['khs'] = MatkulMahasiswaModel::where('mahasiswa_id',$id)->get();
+        $data['khs']->map(function ($item){
+            $item->matkul_id = $item->matkul->nama;
+            $item['sks'] = $item->matkul->sks;
+            $item['semester'] = $item->matkul->semester;
+            return $item;
+        });
+        return response()->json([
+            'data' => $data['mahasiswa'],
+            'khs' => $data['khs']
+        ]);
     }
 
     /**
@@ -157,8 +165,7 @@ class MahasiswaController extends Controller
      * @param  \App\Models\MahasiswaModel  $mahasiswa
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+
 //        $request->validate([
 //            'nim' => 'required|string|max:10|unique:mahasiswa,nim,'.$id,
 //            'nama' => 'required|string|max:50',
@@ -182,7 +189,8 @@ class MahasiswaController extends Controller
 ////        $data = MahasiswaModel::where('id','=',$id)->update($request->except('_token','_method'));
 //        return redirect ('/mahasiswa')
 //            ->with('success','data Mahasiswa berhasil diupdate');
-
+    public function update(Request $request, $id)
+    {
         $rule = [
             'nim' => 'required|string|max:10|unique:mahasiswa,nim,'.$id,
             'nama' => 'required|string|max:50',
@@ -229,9 +237,17 @@ class MahasiswaController extends Controller
      */
     public function destroy($id)
     {
-        MahasiswaModel::where('id','=',$id)->delete();
-        return redirect ('/mahasiswa')
-            ->with('success','data Mahasiswa berhasil dihapus');
+        $data = MahasiswaModel::where('id','=',$id)->first();
+        if($data->foto && file_exists(storage_path('app/public/'.$data->foto))){
+            \Storage::delete('public/'.$data->foto);
+        }
+        $data->delete();
+        return response()->json([
+            'status' => ($data),
+            'modal_close' => false,
+            'message' => ($data)? 'Data berhasil dihapus' : 'Data gagal dihapus',
+            'data' => null
+        ]);
     }
 
     public function cetak_khs($id)
